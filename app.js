@@ -1,4 +1,4 @@
-// set dependencies
+// set dependencies and variables
 const CSVToJSON = require('csvtojson');
 const JSONToCSV = require('json2csv').parse;
 const moment = require('moment');
@@ -11,11 +11,13 @@ CSVToJSON().fromFile('assets/redacted_success.csv').then(source => {
     // use for loop to go through each record
     for (let i = 0; i < source.length; i++) {
         
-        // if the NEXT item in the array is undefined, the report is complete and files will be written to csv file
+        // if next item in array is undefined, report is complete and report generated via csv
         if ((source[i] === undefined) || (source[i+1] === undefined)) {
-            console.log('report complete')
             console.log(incidents)
-            const csv = JSONToCSV(incidents, { fields: ["incident"] });
+            console.log('report complete')
+            // json to csv conversion
+            const csv = JSONToCSV(incidents, { fields: ['incident'] });
+            // write file to asset folder
             fs.writeFileSync('./assets/report.csv', csv)
 
         // otherwise, start report
@@ -32,7 +34,6 @@ CSVToJSON().fromFile('assets/redacted_success.csv').then(source => {
             // if the difference in time is greater than the minutes allowed before report fires, write to file
             if (timeDiff > maxMin) {
                 let record = `Max time was exceeded by ${timeDiff} minutes on ${dateOne}`;
-                // console.log(record);
                 incidents.push({'incident': record});
             }
         }
