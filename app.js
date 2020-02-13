@@ -16,7 +16,22 @@ CSVToJSON().fromFile('assets/redacted.csv').then(source => {
         // if next item in array is undefined, report is complete and report generated via csv
         if ((source[i] === undefined) || (source[i+1] === undefined)) {
             // json to csv conversion
-            const csv = JSONToCSV(incidents, { fields: ['entityId','entityName', 'fileName', 'maxMin', 'timeDiff', 'dateReceived', 'previousFile', 'summary'] });
+            const csv = JSONToCSV(incidents, { fields: [
+                'entityId', 
+                'entityName', 
+                'fileName', 
+                'maxMin', 
+                'timeDiff', 
+                'firstFileDate', 
+                'firstFileTime', 
+                'firstFileTod', 
+                'firstFileDow', 
+                'secondFileDate', 
+                'secondFileTime', 
+                'secondFileTod', 
+                'secondFileDow', 
+                'summary'    
+            ] });
             // write file to asset folder
             fs.writeFileSync('./assets/report.csv', csv)
             // log end of report
@@ -33,23 +48,26 @@ CSVToJSON().fromFile('assets/redacted.csv').then(source => {
             // get the max minutes allowed before alert fires in DB
             let maxMin = source[i].MAX_MINUTES;
 
-            // if the difference in time is greater than the minutes allowed before report fires, write to file
+            // check to see if criteria for creating incident matches
             if (timeDiff > maxMin) {
 
-                let record = `Max time was exceeded by ${timeDiff} minutes on ${dateOne}`;
-
+                // creates object with relevant data to push to array which gets written to file
                 incidents.push({
                     'entityId': source[i].ClientId,
                     'entityName': source[i].ENTITY_NAME,
                     'fileName': source[i].Name,
                     'maxMin': maxMin,
                     'timeDiff': timeDiff,
-                    'dateReceived': dateOne,
-                    'previousFile': dateTwo,
-                    // 'dayOfWeek': moment(dateOne).weekday(),
-                    'summary': record
+                    'firstFileDate': dateOne.format('MM/DD/YYYY'),
+                    'firstFileTime': dateOne.format('HH:MM:SS:SSS'),
+                    'firstFileTod': dateOne.format('A'),
+                    'firstFileDow': dateOne.format('dddd'),
+                    'secondFileDate': dateTwo.format('MM/DD/YYYY'),
+                    'secondFileTime': dateTwo.format('HH:MM:SS:SSS'),
+                    'secondFileTod': dateTwo.format('A'),
+                    'secondFileDow': dateTwo.format('dddd'),
+                    'summary': `Max time was exceeded by ${timeDiff} minutes on ${dateOne.format('dddd, MMMM Do YYYY, h:mm:ss a')}`
                 });
-
             }
         }
     }
