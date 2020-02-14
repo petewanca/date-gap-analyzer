@@ -4,7 +4,6 @@ const JSONToCSV = require('json2csv').parse;
 const moment = require('moment');
 const fs = require('fs');
 const incidents = []
-const data = []
 
 // retrieve data from loaded csv 
 CSVToJSON().fromFile('assets/redacted.csv').then(source => {
