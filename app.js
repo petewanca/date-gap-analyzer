@@ -33,7 +33,7 @@ CSVToJSON().fromFile('assets/redacted.csv').then(source => {
                 'summary'    
             ] });
             // write file to asset folder
-            fs.writeFileSync('./assets/report.csv', csv)
+            fs.writeFileSync('./assets/secondReport.csv', csv)
             // log end of report
             console.log('report ended at: ' + new Date());
             console.log(`${incidents.length} incidents found.`)
@@ -45,9 +45,8 @@ CSVToJSON().fromFile('assets/redacted.csv').then(source => {
             let dateTwo = moment(source[i+1].DateLoaded);
             // compute the difference between current time's index and the next index's time
             let timeDiff = dateOne.diff(dateTwo, 'minutes');
-            // get the max minutes allowed before alert fires in DB
-            let maxMin = source[i].MAX_MINUTES;
-
+            // set max minutes allowed between files (gathered from separate DB query)
+            let maxMin = 90;
             // check to see if criteria for creating incident matches
             if (timeDiff > maxMin) {
 
