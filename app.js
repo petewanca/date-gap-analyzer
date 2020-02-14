@@ -5,7 +5,7 @@ const moment = require('moment');
 const fs = require('fs');
 const incidents = []
 
-// retrieve data from loaded csv 
+// retrieve data from destination dir
 CSVToJSON().fromFile('../../date_gap_app_folders/exports_from_sql/redacted.csv').then(source => {
     // log start of report
     console.log('report started at: ' + new Date());
@@ -31,7 +31,7 @@ CSVToJSON().fromFile('../../date_gap_app_folders/exports_from_sql/redacted.csv')
                 'secondFileDow', 
                 'summary'    
             ] });
-            // write file to asset folder
+            // write file to destination dir
             fs.writeFileSync(`../../date_gap_app_folders/reports_generated_by_app/${source[i].ClientId}_report_${moment().format('MM_DD_YYYY')}.csv`, csv)
             // log end of report
             console.log('report ended at: ' + new Date());
