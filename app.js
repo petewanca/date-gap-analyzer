@@ -19,16 +19,16 @@ CSVToJSON().fromFile('../../date_gap_app_folders/exports_from_sql/redacted.csv')
                 'entityId', 
                 'entityName', 
                 'fileName', 
-                'maxMin', 
-                'timeDiff', 
-                'firstFileDate', 
-                'firstFileTime', 
-                'firstFileTod', 
-                'firstFileDow', 
-                'secondFileDate', 
-                'secondFileTime', 
-                'secondFileTod', 
-                'secondFileDow', 
+                'maxMinsAllowed', 
+                'timeDiffBetweenFiles', 
+                'recentFileDate', 
+                'recentFileTime', 
+                'recentFileTod', 
+                'recentFileDow', 
+                'previousFileDate', 
+                'previousFileTime', 
+                'previousFileTod', 
+                'previousFileDow', 
                 'summary'    
             ] });
             // write file to destination dir
@@ -45,7 +45,7 @@ CSVToJSON().fromFile('../../date_gap_app_folders/exports_from_sql/redacted.csv')
             // compute the difference between current time's index and the next index's time
             let timeDiff = dateOne.diff(dateTwo, 'minutes');
             // set max minutes allowed between files (gathered from separate DB query)
-            let maxMin = 90;
+            let maxMin = 60;
             // check to see if criteria for creating incident matches
             if (timeDiff > maxMin) {
 
@@ -54,16 +54,16 @@ CSVToJSON().fromFile('../../date_gap_app_folders/exports_from_sql/redacted.csv')
                     'entityId': source[i].ClientId,
                     'entityName': source[i].ENTITY_NAME,
                     'fileName': source[i].Name,
-                    'maxMin': maxMin,
-                    'timeDiff': timeDiff,
-                    'firstFileDate': dateOne.format('MM/DD/YYYY'),
-                    'firstFileTime': dateOne.format('HH:MM:SS:SSS'),
-                    'firstFileTod': dateOne.format('A'),
-                    'firstFileDow': dateOne.format('dddd'),
-                    'secondFileDate': dateTwo.format('MM/DD/YYYY'),
-                    'secondFileTime': dateTwo.format('HH:MM:SS:SSS'),
-                    'secondFileTod': dateTwo.format('A'),
-                    'secondFileDow': dateTwo.format('dddd'),
+                    'maxMinsAllowed': maxMin,
+                    'timeDiffBetweenFiles': timeDiff,
+                    'recentFileDate': dateOne.format('MM/DD/YYYY'),
+                    'recentFileTime': dateOne.format('HH:MM:SS:SSS'),
+                    'recentFileTod': dateOne.format('A'),
+                    'recentFileDow': dateOne.format('dddd'),
+                    'previousFileDate': dateTwo.format('MM/DD/YYYY'),
+                    'previousFileTime': dateTwo.format('HH:MM:SS:SSS'),
+                    'previousFileTod': dateTwo.format('A'),
+                    'previousFileDow': dateTwo.format('dddd'),
                     'summary': `Max time was exceeded by ${timeDiff} minutes on ${dateOne.format('dddd, MMMM Do YYYY, h:mm:ss a')}`
                 });
             }
