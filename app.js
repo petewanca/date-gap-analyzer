@@ -6,7 +6,7 @@ const fs = require('fs');
 const incidents = []
 
 // retrieve data from destination dir
-CSVToJSON().fromFile('../../date_gap_app_folders/exports_from_sql/redacted.csv').then(source => {
+CSVToJSON().fromFile('../../../date-gap-dirs/hold/redacted.csv').then(source => {
     // log start of report
     console.log('report started at: ' + new Date());
     console.log(`preparing ${source.length} records`)
@@ -32,7 +32,7 @@ CSVToJSON().fromFile('../../date_gap_app_folders/exports_from_sql/redacted.csv')
                 'summary'    
             ] });
             // write file to destination dir
-            fs.writeFileSync(`../../date_gap_app_folders/reports_generated_by_app/${source[i].ClientId}_report_${moment().format('MM_DD_YYYY')}.csv`, csv)
+            fs.writeFileSync(`../../../date-gap-dirs/report/${source[i].ClientId}_report_${moment().format('MM_DD_YYYY')}.csv`, csv)
             // log end of report
             console.log('report ended at: ' + new Date());
             console.log(`${incidents.length} incidents found.`)
